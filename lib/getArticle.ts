@@ -14,13 +14,22 @@ export type Article = {
 };
 
 export async function getArticle(id: string): Promise<Article | null> {
+  console.log('[getArticle] id param:', JSON.stringify(id));
+
   const { data, error } = await supabase
     .from('news_cache')
     .select('articles')
     .single();
 
+  console.log('[getArticle] supabase: !!data =', !!data, '| articles.length =', data?.articles?.length, '| error =', error?.message ?? null);
+
   if (error || !data) return null;
 
   const articles = (data.articles ?? []) as Article[];
-  return articles.find((a) => a.id === id) ?? null;
+  console.log('[getArticle] first 3 article ids:', articles.slice(0, 3).map((a) => a.id));
+
+  const found = articles.find((a) => a.id === id) ?? null;
+  console.log('[getArticle] find matched:', !!found);
+
+  return found;
 }
