@@ -14,6 +14,7 @@ export type Article = {
 };
 
 export async function getArticle(id: string): Promise<Article | null> {
+  // TODO: remove once slug stability + cache persistence are fixed in gulf-watch fetch-news cron
   console.log('[getArticle] id param:', JSON.stringify(id));
 
   const { data, error } = await supabase
